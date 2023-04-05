@@ -28,6 +28,7 @@ export const Input = styled.input`
 export const OpenButton = styled.button`
 	width: 100%;
 	height: 100%;
+
 	border-radius: 50px;
 	padding: 0 20px;
 	background-color: #555;
@@ -39,15 +40,20 @@ export const List = styled.ul`
 `;
 export const Item = styled.li`
 	width: 100%;
-	height: 50px;
+	height: 40px;
 	margin-bottom: 10px;
 	border-radius: 10px;
 	background-color: white;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 20px;
 `;
-export const ItemTitle = styled.span``;
+export const ItemTitle = styled.span`
+	width: 70%;
+`;
 
 export const DeleteButton = styled.button``;
+export const EditButton = styled.button``;
+export const EditForm = styled(Form)``;
