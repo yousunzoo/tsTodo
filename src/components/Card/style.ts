@@ -13,6 +13,27 @@ export const Title = styled.h2`
 	margin-bottom: 20px;
 `;
 
+export const Form = styled.form`
+	width: 100%;
+	height: 40px;
+	margin-bottom: 20px;
+`;
+export const Input = styled.input`
+	width: 100%;
+	height: 100%;
+	border-radius: 50px;
+	border: 4px solid #333;
+	padding: 0 20px;
+`;
+export const OpenButton = styled.button`
+	width: 100%;
+	height: 100%;
+	border-radius: 50px;
+	padding: 0 20px;
+	background-color: #555;
+	color: white;
+`;
+
 export const List = styled.ul`
 	width: 100%;
 `;
@@ -23,6 +44,7 @@ export const Item = styled.li`
 	border-radius: 10px;
 	background-color: white;
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
 	padding: 0 20px;
 `;

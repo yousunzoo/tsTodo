@@ -7,7 +7,7 @@ const REMOVE_TODO = 'todos/REMOVE_TODO' as const;
 const CHANGE_TODO_STATUS = 'todos/CHANGE_TODO_STATUS' as const;
 
 // 액션 객체 생성 함수
-export const addTodo = (todo: string) => ({ type: ADD_TODO, payload: { todo } });
+export const addTodo = (todo: string, status: string) => ({ type: ADD_TODO, payload: { todo, status } });
 export const editTodo = (id: string, todo: string, status: string) => ({ type: EDIT_TODO, payload: { id, todo, status } });
 export const removeTodo = (id: string, status: string) => ({ type: REMOVE_TODO, payload: { id, status } });
 export const changeTodoStatus = (id: string, status: string) => ({ type: CHANGE_TODO_STATUS, payload: { id, status } });
@@ -37,7 +37,7 @@ export default function todos(state: TodosState = initialState, action: TodoActi
 		case ADD_TODO:
 			return {
 				...state,
-				todo: [...state.todo, { id: nanoid(), title: action.payload.todo }],
+				[action.payload.status]: [...state[action.payload.status], { id: nanoid(), title: action.payload.todo }],
 			};
 		case EDIT_TODO:
 			return {
