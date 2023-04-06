@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { DraggableLocation } from 'react-beautiful-dnd';
 
 // 액션 타입
 const ADD_TODO = 'todos/ADD_TODO' as const;
@@ -10,7 +11,7 @@ const CHANGE_TODO_STATUS = 'todos/CHANGE_TODO_STATUS' as const;
 export const addTodo = (todo: string, status: string) => ({ type: ADD_TODO, payload: { todo, status } });
 export const editTodo = (id: string, todo: string, status: string) => ({ type: EDIT_TODO, payload: { id, todo, status } });
 export const removeTodo = (id: string, status: string) => ({ type: REMOVE_TODO, payload: { id, status } });
-export const changeTodoStatus = (id: string, status: string) => ({ type: CHANGE_TODO_STATUS, payload: { id, status } });
+export const changeTodoStatus = (prev: DraggableLocation, next: DraggableLocation | null | undefined) => ({ type: CHANGE_TODO_STATUS, payload: { prev, next } });
 
 // 액션 객체 타입
 type TodoAction = ReturnType<typeof addTodo | typeof editTodo | typeof removeTodo | typeof changeTodoStatus>;
@@ -54,6 +55,13 @@ export default function todos(state: TodosState = initialState, action: TodoActi
 				...state,
 				[action.payload.status]: state[action.payload.status].filter((item: Todo) => item.id !== action.payload.id),
 			};
+		case CHANGE_TODO_STATUS:
+			const { prev, next } = action.payload;
+			if (next) {
+				const item = state[prev.droppableId].splice(prev.index, 1)[0];
+				state[next.droppableId].splice(next.index, 0, item);
+			}
+			return { ...state };
 		default:
 			return state;
 	}

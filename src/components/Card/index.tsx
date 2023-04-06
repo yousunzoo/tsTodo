@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Todo, addTodo, editTodo, removeTodo } from '../../modules/todos';
 import * as S from './style';
 import { useDispatch } from 'react-redux';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 interface IProps {
-	title: string;
+	status: string;
 	data: Todo[];
 }
 function Card({ status, data }: IProps) {
@@ -19,6 +20,7 @@ function Card({ status, data }: IProps) {
 		e.preventDefault();
 		dispatch(addTodo(todo, status));
 		setIsOpened(false);
+		setTodo('');
 	};
 	const handleEditTodo = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -60,28 +62,38 @@ function Card({ status, data }: IProps) {
 					)}
 				</S.Form>
 			)}
-			<S.List>
-				{data.map((item) => {
-					return (
-						<S.Item key={item.id}>
-							<S.ItemTitle>{item.title}</S.ItemTitle>
-							<S.EditButton
-								onClick={() => {
-									setIsEditMode(true);
-									setEditingTodo(item);
-								}}>
-								✏️
-							</S.EditButton>
-							<S.DeleteButton
-								onClick={(e) => {
-									handleDelete(item.id, status);
-								}}>
-								🗑️
-							</S.DeleteButton>
-						</S.Item>
-					);
-				})}
-			</S.List>
+			<Droppable droppableId={status}>
+				{(provided) => (
+					<S.List ref={provided.innerRef} {...provided.droppableProps}>
+						{data.map((item, idx) => {
+							return (
+								<Draggable key={item.id} draggableId={item.id} index={idx}>
+									{(provided) => (
+										<S.Item ref={provided.innerRef} {...provided.draggableProps}>
+											<span {...provided.dragHandleProps}>↕️</span>
+											<S.ItemTitle>{item.title}</S.ItemTitle>
+											<S.EditButton
+												onClick={() => {
+													setIsEditMode(!isEditMode);
+													setEditingTodo(item);
+												}}>
+												✏️
+											</S.EditButton>
+											<S.DeleteButton
+												onClick={(e) => {
+													handleDelete(item.id, status);
+												}}>
+												🗑️
+											</S.DeleteButton>
+										</S.Item>
+									)}
+								</Draggable>
+							);
+						})}
+						{provided.placeholder}
+					</S.List>
+				)}
+			</Droppable>
 		</S.Card>
 	);
 }
